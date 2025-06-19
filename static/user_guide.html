@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hướng dẫn sử dụng</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .guide-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #1a73e8;
+            margin-bottom: 1rem;
+        }
+        .content {
+            margin-left: 1.5rem;
+        }
+        .edit-button {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+        .edit-button:hover {
+            background: #1557b0;
+        }
+        .content-editable {
+            min-height: 100px;
+            padding: 1rem;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="guide-section">
+        <h1>Hướng dẫn sử dụng hệ thống</h1>
+        <button onclick="toggleEdit(this)" class="edit-button">Chỉnh sửa</button>
+        <div class="content" contenteditable="false">
+            Nhập nội dung tổng quan về hệ thống tại đây
+        </div>
+    </div>
+
+    <div class="guide-section">
+        <h2>1. Chat Bot</h2>
+        <button onclick="toggleEdit(this)" class="edit-button">Chỉnh sửa</button>
+        <div class="content" contenteditable="false">
+            Hướng dẫn sử dụng chat bot
+        </div>
+    </div>
+
+    <div class="guide-section">
+        <h2>2. Cập nhật dữ liệu mới</h2>
+        <button onclick="toggleEdit(this)" class="edit-button">Chỉnh sửa</button>
+        <div class="content" contenteditable="false">
+            Hướng dẫn cập nhật dữ liệu
+        </div>
+    </div>
+
+    <div class="guide-section">
+        <h2>3. Xóa bỏ dữ liệu</h2>
+        <button onclick="toggleEdit(this)" class="edit-button">Chỉnh sửa</button>
+        <div class="content" contenteditable="false">
+            Hướng dẫn xóa dữ liệu
+        </div>
+    </div>
+
+    <script>
+        function toggleEdit(button) {
+            const content = button.nextElementSibling;
+            const isEditing = content.contentEditable === 'true';
+            content.contentEditable = !isEditing;
+            button.textContent = isEditing ? 'Chỉnh sửa' : 'Lưu';
+            button.style.background = isEditing ? '#1a73e8' : '#28a745';
+            
+            if (isEditing) {
+                // Add save functionality here if needed
+                console.log('Saved content:', content.innerHTML);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Semantic Search</title>
+  <style>
+    body { 
+      font-family: sans-serif; 
+      margin: 2rem; 
+    }
+    #result { 
+      margin-top: 1rem; 
+      white-space: pre-wrap; 
+      background: #f9f9f9; 
+      padding: 1rem; 
+      border-radius: 6px; 
+    }
+    .delete-section {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #fff3f3;
+      border-radius: 6px;
+      border: 1px solid #ffcdd2;
+    }
+    .delete-form {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .delete-input {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 200px;
+    }
+    .delete-button {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .delete-button:hover {
+      background: #c82333;
+    }
+    #deleteStatus {
+      margin-top: 1rem;
+      padding: 0.5rem;
+      border-radius: 4px;
+      display: none;
+    }
+    .status-success {
+      background: #d4edda;
+      color: #155724;
+    }
+    .status-error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+<body>
+  <h2>Tìm kiếm tài liệu PDF</h2>
+  <form id="search-form">
+    <input type="text" id="query" placeholder="Nhập từ khóa..." size="60" required />
+    <button type="submit">Tìm kiếm</button>
+  </form>
+  <div id="result"></div>
+
+  <!-- Add delete section -->
+  <div class="delete-section">
+    <h3>Xóa document theo ID</h3>
+    <div class="delete-form">
+      <input 
+        type="text" 
+        id="deleteId" 
+        placeholder="Nhập ID document cần xóa" 
+        class="delete-input"
+      />
+      <button onclick="deleteDocument()" class="delete-button">Xóa Document</button>
+    </div>
+    <div id="deleteStatus"></div>
+  </div>
+
+  <script>
+  // Existing search functionality
+  document.getElementById("search-form").onsubmit = async (e) => {
+    e.preventDefault();
+    const q = document.getElementById("query").value.trim();
+    if (!q) return alert("Vui lòng nhập từ khóa!");
+    document.getElementById("result").textContent = "Đang tìm kiếm...";
+    const res = await fetch("/semantic-search", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({question: q})
+    });
+    const data = await res.json();
+    document.getElementById("result").textContent = data.result;
+  };
+
+  // Add delete functionality
+  async function deleteDocument() {
+    const idInput = document.getElementById('deleteId');
+    const statusElement = document.getElementById('deleteStatus');
+    
+    const docId = idInput.value.trim();
+    if (!docId) {
+      alert('Vui lòng nhập ID cần xóa');
+      return;
+    }
+    
+    try {
+      const response = await fetch('/delete-document', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ doc_id: docId })
+      });
+      
+      const result = await response.text();
+      
+      // Show status message
+      statusElement.textContent = result;
+      statusElement.className = response.ok ? 'status-success' : 'status-error';
+      statusElement.style.display = 'block';
+      
+      if (response.ok) {
+        // Clear input
+        idInput.value = '';
+        
+        // Refresh search results if there's an active search
+        const searchQuery = document.getElementById('query').value;
+        if (searchQuery.trim()) {
+          document.getElementById('search-form').dispatchEvent(new Event('submit'));
+        }
+      }
+      
+    } catch (error) {
+      statusElement.textContent = `Lỗi: ${error.message}`;
+      statusElement.className = 'status-error';
+      statusElement.style.display = 'block';
+    }
+  }
+  </script>
+</body>
+</html>
