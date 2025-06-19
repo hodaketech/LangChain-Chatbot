@@ -4,8 +4,6 @@ langchain-openai
 pypdf
 faiss-cpu
 openai
-chromadb
-
 fastapi
 uvicorn
 uvicorn[standard]
