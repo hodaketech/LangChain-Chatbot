@@ -1,0 +1,28 @@
+1. Chạy local
+pip install requirment.txt
+uvicorn app.api:app --reload --port 8000
+
+
+2. Triển khai docker
+Lưu ý:
+Tăng --workers trong gunicorn theo số core CPU thật sự
+Tại docker-compose.yml bổ xung nginx nếu có sử dụng (hoặc các service khác để reverse proxy)
+
+triển khai app từ image:
+docker build -t chatbot-langchain .
+
+Run container:
+docker run -d -p 8000:8000 --name chatbot_test chatbot-langchain
+
+Người dùng truy cập qua:
+http://<IP-may-server>:8000
+
+Dừng:
+docker stop chatbot_test
+
+chạy những lần tiếp theo
+docker start chatbot_test
+
+back-up data tại thư mục persistent
+
+python -m app.database_user

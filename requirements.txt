@@ -1,0 +1,17 @@
+langchain
+langchain-community
+langchain-openai
+langchain-google-genai
+pypdf
+faiss-cpu
+openai
+fastapi
+uvicorn
+pydantic
+python-multipart
+waitress
+itsdangerous
+aiosqlite
+starlette
+gunicorn
+google-ai-generativelanguage>=0.6.18,<0.7.0

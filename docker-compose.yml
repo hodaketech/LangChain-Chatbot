@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  chatbot:
+    build: .
+    container_name: langchain_fastapi
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount thư mục chứa các DB từ host → container
+      - ./persistent/chat.db:/app/app/chat.db
+      - ./persistent/data.db:/app/app/data.db
+      - ./persistent/vectorstores:/app/app/vectorstores
+    restart: always
