@@ -1,0 +1,41 @@
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+.guide-section {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+h1, h2, h3 {
+    color: #1a73e8;
+    margin-bottom: 1rem;
+}
+.content {
+    margin-left: 1.5rem;
+}
+.edit-button {
+    background: #1a73e8;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+.edit-button:hover {
+    background: #1557b0;
+}
+.content-editable {
+    min-height: 100px;
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+}

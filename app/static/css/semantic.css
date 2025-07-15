@@ -1,0 +1,55 @@
+
+body { 
+    font-family: sans-serif; 
+    margin: 2rem; 
+}
+#result { 
+    margin-top: 1rem; 
+    white-space: pre-wrap; 
+    background: #f9f9f9; 
+    padding: 1rem; 
+    border-radius: 6px; 
+}
+.delete-section {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #fff3f3;
+    border-radius: 6px;
+    border: 1px solid #ffcdd2;
+}
+.delete-form {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+.delete-input {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+}
+.delete-button {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.delete-button:hover {
+    background: #c82333;
+}
+#deleteStatus {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    display: none;
+}
+.status-success {
+    background: #d4edda;
+    color: #155724;
+}
+.status-error {
+    background: #f8d7da;
+    color: #721c24;
+}

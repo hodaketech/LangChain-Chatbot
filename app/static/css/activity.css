@@ -1,0 +1,28 @@
+.activity-container {
+    max-width: 800px;
+    margin: 30px auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(26,115,232,0.08);
+    padding: 32px 24px 24px 24px;
+}
+.activity-container h2 {
+    text-align: center;
+    color: #1a73e8;
+    margin-bottom: 24px;
+}
+.activity-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1em;
+}
+.activity-table th, .activity-table td {
+    border: 1px solid #e0e0e0;
+    padding: 10px 8px;
+    text-align: center;
+}
+.activity-table th {
+    background: #f5f7fa;
+    color: #1a73e8;
+    font-weight: 600;
+}

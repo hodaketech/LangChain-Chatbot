@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <title>Chat Bot Assistant</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Chat với Trợ lý AI</h1>
+        <form id="chat-form">
+            <input type="text" id="question" placeholder="Nhập câu hỏi của bạn..." />
+            <button type="submit">Gửi</button>
+        </form>
+        <div class="answer-container">
+            <div class="loading">Đang xử lý câu hỏi...</div>
+            <div id="answer"></div>
+        </div>
+    </div>
+
+    <script>
+        // Thông báo kích thước cho parent frame
+        function updateParentHeight() {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'resize',
+                    height: document.documentElement.scrollHeight
+                }, '*');
+            }
+        }
+
+        // API handling
+        document.getElementById("chat-form").onsubmit = async (e) => {
+            e.preventDefault();
+            const loading = document.querySelector('.loading');
+            const answer = document.getElementById('answer');
+            const q = document.getElementById("question").value;
+            
+            if (!q.trim()) return;
+            
+            loading.style.display = 'block';
+            answer.style.display = 'none';
+            
+            try {
+                const res = await fetch(window.location.origin + "/ask", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({question: q})
+                });
+                
+                if (!res.ok) throw new Error('Network response was not ok');
+                
+                const data = await res.json();
+                const sanitizeHTML = (str) => {
+                    const temp = document.createElement('div');
+                    temp.textContent = str;
+                    return temp.innerHTML;
+                };
+                
+                answer.innerHTML = `
+                    <h3>Kết quả:</h3>
+                    <p>${sanitizeHTML(data.answer)}</p>
+                    <h4>Nguồn:</h4>
+                    <ul>${data.sources.map(s => `<li>${sanitizeHTML(s)}</li>`).join("")}</ul>
+                `;
+                updateParentHeight();
+            } catch (error) {
+                console.error('Error:', error);
+                answer.innerHTML = '<p style="color: #d93025;">Có lỗi xảy ra, vui lòng thử lại.</p>';
+            } finally {
+                loading.style.display = 'none';
+                answer.style.display = 'block';
+            }
+        };
+
+        // Initial height update
+        window.addEventListener('load', updateParentHeight);
+    </script>
+</body>
+</html>

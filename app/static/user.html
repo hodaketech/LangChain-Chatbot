@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản trị tài khoản</title>
+    <link rel="stylesheet" href="/static/css/user.css">
+</head>
+<body>
+    <div class="user-container">
+        <h2>Quản trị tài khoản</h2>
+        <table class="user-table" id="userTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Họ tên</th>
+                    <th>Mật khẩu</th>
+                    <th>Role</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dữ liệu sẽ được render bằng JS -->
+            </tbody>
+        </table>
+        <button class="confirm-btn" onclick="submitChanges()">Xác nhận</button>
+
+        <div class="create-user-section">
+            <h3>Tạo tài khoản mới</h3>
+            <form id="createUserForm" onsubmit="return createUser(event)">
+                <input type="email" id="newMail" placeholder="Email" required>
+                <input type="text" id="newName" placeholder="Họ tên" required>
+                <input type="password" id="newPassword" placeholder="Mật khẩu" required>
+                <select id="newRole">
+                    <option value="0">Normal</option>
+                    <option value="1">Admin</option>
+                </select>
+                <button type="submit" class="create-btn">Tạo tài khoản</button>
+                <span id="createUserStatus" class="status"></span>
+            </form>
+        </div>
+    </div>
+    <script>
+        let users = [];
+        let changedRoles = {};
+        let changedPasswords = {};
+        let deletedUsers = new Set();
+
+        // Lấy danh sách user từ API
+        async function fetchUsers() {
+            const res = await fetch('/api/users', {credentials: "include"});
+            users = await res.json();
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.querySelector("#userTable tbody");
+            tbody.innerHTML = "";
+            users.forEach(user => {
+                if (deletedUsers.has(user.id)) return;
+                const tr = document.createElement("tr");
+
+                // ID
+                tr.innerHTML += `<td>${user.id}</td>`;
+
+                // Email
+                tr.innerHTML += `<td>${user.mail}</td>`;
+
+                // Name
+                tr.innerHTML += `<td>${user.name}</td>`;
+
+                // Password (ẩn/hiện)
+                const pwdId = `pwd-${user.id}`;
+                tr.innerHTML += `
+                    <td>
+                        <input type="password" id="${pwdId}" value="${user.password}" disabled style="width:90px;">
+                        <button type="button" onclick="togglePwd(${user.id})">👁️</button>
+                    </td>
+                `;
+
+                // Role (select box)
+                tr.innerHTML += `
+                    <td>
+                        <select onchange="roleChanged(${user.id}, this.value)">
+                            <option value="1" ${user.role == 1 ? "selected" : ""}>Admin</option>
+                            <option value="0" ${user.role == 0 ? "selected" : ""}>Normal</option>
+                        </select>
+                    </td>
+                `;
+
+                // Edit
+                tr.innerHTML += `
+                    <td>
+                        <button type="button" onclick="enablePwdEdit(${user.id})">Đổi mật khẩu</button>
+                        <button type="button" onclick="deleteUser(${user.id})" style="color:red;">Xoá</button>
+                    </td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        function togglePwd(id) {
+            const input = document.getElementById(`pwd-${id}`);
+            input.type = input.type === "password" ? "text" : "password";
+        }
+
+        function enablePwdEdit(id) {
+            const input = document.getElementById(`pwd-${id}`);
+            input.disabled = false;
+            input.focus();
+            input.addEventListener('input', () => {
+                changedPasswords[id] = input.value;
+            });
+        }
+
+        function roleChanged(id, value) {
+            changedRoles[id] = value;
+        }
+
+        function deleteUser(id) {
+            if (confirm("Bạn chắc chắn muốn xoá tài khoản này?")) {
+                deletedUsers.add(id);
+                renderTable();
+            }
+        }
+
+        async function submitChanges() {
+            // Đổi role
+            for (const [id, role] of Object.entries(changedRoles)) {
+                await fetch('/api/user/role', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: "include",
+                    body: JSON.stringify({id, role})
+                });
+            }
+            // Đổi mật khẩu
+            for (const [id, password] of Object.entries(changedPasswords)) {
+                await fetch('/api/user/password', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: "include",
+                    body: JSON.stringify({id, password})
+                });
+            }
+            // Xoá user
+            for (const id of deletedUsers) {
+                await fetch('/api/user/delete', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: "include",
+                    body: JSON.stringify({id})
+                });
+            }
+            alert("Cập nhật thành công!");
+            // Reset trạng thái
+            changedRoles = {};
+            changedPasswords = {};
+            deletedUsers = new Set();
+            fetchUsers();
+        }
+
+        async function createUser(e) {
+            e.preventDefault();
+            const mail = document.getElementById('newMail').value.trim();
+            const name = document.getElementById('newName').value.trim();
+            const password = document.getElementById('newPassword').value.trim();
+            const role = document.getElementById('newRole').value;
+            const status = document.getElementById('createUserStatus');
+            status.textContent = "";
+            if (!mail || !name || !password) {
+                status.textContent = "Vui lòng nhập đầy đủ thông tin!";
+                status.className = "status error";
+                return false;
+            }
+            const res = await fetch('/api/user/create', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                credentials: "include",
+                body: JSON.stringify({mail, name, password, role})
+            });
+            if (res.ok) {
+                status.textContent = "Tạo tài khoản thành công!";
+                status.className = "status";
+                document.getElementById('createUserForm').reset();
+                fetchUsers();
+            } else {
+                const data = await res.json();
+                status.textContent = data.error || "Tạo tài khoản thất bại!";
+                status.className = "status error";
+            }
+            return false;
+        }
+
+        // Khởi tạo
+        fetchUsers();
+    </script>
+</body>
+</html>

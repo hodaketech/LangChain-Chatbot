@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/static/css/semantic.css">
+  <title>Semantic Search</title>
+</head>
+<body>
+  <h2>Tìm kiếm tài liệu PDF</h2>
+  <form id="search-form">
+    <input type="text" id="query" placeholder="Nhập từ khóa..." size="60" required />
+    <button type="submit">Tìm kiếm</button>
+  </form>
+  <div id="result"></div>
+
+  <!-- Add delete section -->
+  <div class="delete-section">
+    <h3>Xóa document theo ID</h3>
+    <div class="delete-form">
+      <input 
+        type="text" 
+        id="deleteId" 
+        placeholder="Nhập ID document cần xóa" 
+        class="delete-input"
+      />
+      <button onclick="deleteDocument()" class="delete-button">Xóa Document</button>
+    </div>
+    <div id="deleteStatus"></div>
+  </div>
+
+  <script>
+  // Existing search functionality
+  document.getElementById("search-form").onsubmit = async (e) => {
+    e.preventDefault();
+    const q = document.getElementById("query").value.trim();
+    if (!q) return alert("Vui lòng nhập từ khóa!");
+    document.getElementById("result").textContent = "Đang tìm kiếm...";
+    const res = await fetch("/semantic-search", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({question: q})
+    });
+    const data = await res.json();
+    document.getElementById("result").textContent = data.result;
+  };
+
+  // Add delete functionality
+  async function deleteDocument() {
+    const idInput = document.getElementById('deleteId');
+    const statusElement = document.getElementById('deleteStatus');
+    
+    const docId = idInput.value.trim();
+    if (!docId) {
+      alert('Vui lòng nhập ID cần xóa');
+      return;
+    }
+    
+    try {
+      const response = await fetch('/delete-document', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ doc_id: docId })
+      });
+      
+      const result = await response.text();
+      
+      // Show status message
+      statusElement.textContent = result;
+      statusElement.className = response.ok ? 'status-success' : 'status-error';
+      statusElement.style.display = 'block';
+      
+      if (response.ok) {
+        // Clear input
+        idInput.value = '';
+        
+        // Refresh search results if there's an active search
+        const searchQuery = document.getElementById('query').value;
+        if (searchQuery.trim()) {
+          document.getElementById('search-form').dispatchEvent(new Event('submit'));
+        }
+      }
+      
+    } catch (error) {
+      statusElement.textContent = `Lỗi: ${error.message}`;
+      statusElement.className = 'status-error';
+      statusElement.style.display = 'block';
+    }
+  }
+  </script>
+</body>
+</html>

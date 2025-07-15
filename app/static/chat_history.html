@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lịch sử trò chuyện</title>
+    <link rel="stylesheet" href="/static/css/chat_history.css">
+</head>
+<body>
+    <div class="chat-history-container">
+        <h2>Lịch sử trò chuyện</h2>
+        <div class="filters">
+            <label>
+                Sắp xếp:
+                <select id="orderFilter">
+                    <option value="desc">Mới nhất</option>
+                    <option value="asc">Cũ nhất</option>
+                </select>
+            </label>
+            <label>
+                Số câu hỏi:
+                <select id="limitFilter">
+                    <option value="10">10</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </label>
+            <label>
+                Từ ngày:
+                <input type="date" id="startDateFilter">
+            </label>
+            <label>
+                Đến ngày:
+                <input type="date" id="endDateFilter">
+            </label>
+            <button onclick="loadHistory()">Lọc</button>
+            <button id="toggleSourcesBtn" onclick="toggleSources()">Ẩn/Hiện nguồn</button>
+        </div>
+        <table class="chat-table">
+            <thead>
+                <tr>
+                    <th>Câu hỏi</th>
+                    <th>Phản hồi</th>
+                    <th>Thời gian</th>
+                    <th id="sourcesHeader">Nguồn</th>
+                </tr>
+            </thead>
+            <tbody id="chatBody"></tbody>
+        </table>
+    </div>
+    <script>
+        let sourcesVisible = true;
+        function toggleSources() {
+            sourcesVisible = !sourcesVisible;
+            document.querySelectorAll('.sources-col').forEach(td => {
+                td.style.display = sourcesVisible ? '' : 'none';
+            });
+            document.getElementById('sourcesHeader').style.display = sourcesVisible ? '' : 'none';
+        }
+
+        async function loadHistory() {
+            const order = document.getElementById('orderFilter').value;
+            const limit = document.getElementById('limitFilter').value;
+            const startDate = document.getElementById('startDateFilter').value;
+            const endDate = document.getElementById('endDateFilter').value;
+            let url = `/api/chat-history?order=${order}&limit=${limit}`;
+            if (startDate) url += `&start_date=${startDate}`;
+            if (endDate) url += `&end_date=${endDate}`;
+            const res = await fetch(url, {credentials: "include"});
+            const data = await res.json();
+            const body = document.getElementById('chatBody');
+            body.innerHTML = "";
+            data.forEach(chat => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${chat.question}</td>
+                    <td>${chat.answer}</td>
+                    <td>${new Date(chat.time).toLocaleString()}</td>
+                    <td class="sources-col">${chat.sources ? chat.sources.replace(/\n/g, "<br>") : ""}</td>
+                `;
+                body.appendChild(tr);
+            });
+            // Ẩn/hiện sources theo trạng thái hiện tại
+            document.querySelectorAll('.sources-col').forEach(td => {
+                td.style.display = sourcesVisible ? '' : 'none';
+            });
+            document.getElementById('sourcesHeader').style.display = sourcesVisible ? '' : 'none';
+        }
+        window.onload = loadHistory;
+    </script>
+</body>
+</html>

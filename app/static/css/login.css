@@ -1,0 +1,127 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    background: #f5f7fa;
+}
+
+.login-bg {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(120deg, #1a73e8 0%, #67c6ff 100%);
+}
+
+.login-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(26,115,232,0.10), 0 1.5px 8px rgba(0,0,0,0.04);
+    padding: 40px 32px 32px 32px;
+    width: 350px;
+    max-width: 95vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.7s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.login-icon {
+    width: 56px;
+    margin-bottom: 10px;
+}
+
+.login-header h2 {
+    margin: 0 0 6px 0;
+    font-weight: 700;
+    color: #1a73e8;
+    font-size: 1.5em;
+}
+
+.login-header p {
+    color: #5f6368;
+    font-size: 1em;
+    margin: 0;
+}
+
+.input-group {
+    width: 100%;
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: #1a73e8;
+    font-weight: 500;
+    font-size: 1em;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1em;
+    background: #f8fafc;
+    transition: border 0.2s;
+}
+
+.input-group input:focus {
+    border: 1.5px solid #1a73e8;
+    outline: none;
+    background: #fff;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px 0;
+    background: linear-gradient(90deg, #1a73e8 60%, #67c6ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    box-shadow: 0 2px 8px rgba(26,115,232,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.login-btn:hover {
+    background: linear-gradient(90deg, #1761c6 60%, #4bb3f7 100%);
+    box-shadow: 0 4px 16px rgba(26,115,232,0.13);
+}
+
+.status {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 1em;
+    color: #d93025;
+    min-height: 22px;
+    font-weight: 500;
+}
+
+.status.error {
+    color: #d93025;
+}
+
+@media (max-width: 480px) {
+    .login-card {
+        padding: 24px 8px 18px 8px;
+        width: 98vw;
+    }
+    .login-header h2 {
+        font-size: 1.1em;
+    }
+}

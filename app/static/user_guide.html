@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hướng dẫn sử dụng</title>
+    <link rel="stylesheet" href="/static/css/user_guide.css">
+</head>
+<body>
+    <div class="guide-section">
+        <h1>Hướng dẫn sử dụng hệ thống</h1>
+        <button onclick="toggleEdit(this)" class="edit-button">Chỉnh sửa</button>
+        <div class="content" contenteditable="false">
+            <b>AI Assistant Platform</b> là hệ thống trợ lý AI sử dụng LangChain để xử lý, tìm kiếm và trả lời các câu hỏi dựa trên dữ liệu văn bản và tài liệu PDF do người dùng cung cấp. Hệ thống hỗ trợ quản trị tài khoản, quản lý dữ liệu, truy vết lịch sử hoạt động và trò chuyện, đồng thời cung cấp giao diện thân thiện cho người dùng và quản trị viên.
+        </div>
+    </div>
+
+    <div class="guide-section">
+        <h2>1. Chat Bot</h2>
+        <button onclick="toggleEdit(this)" class="edit-button">Chỉnh sửa</button>
+        <div class="content" contenteditable="false">
+            <b>Cách sử dụng Chat Bot:</b>
+            <ul>
+                <li>Nhập câu hỏi vào ô chat và nhấn "Gửi".</li>
+                <li>Bot sẽ trả lời dựa trên dữ liệu đã được xử lý (văn bản hoặc PDF).</li>
+                <li>Kết quả trả lời sẽ hiển thị ngay bên dưới, kèm nguồn tham chiếu (nếu có).</li>
+                <li>Mỗi câu hỏi và phản hồi đều được lưu lại trong lịch sử trò chuyện, bạn có thể xem lại tại mục "Lịch sử trò chuyện".</li>
+            </ul>
+            <b>Lưu ý:</b>
+            <ul>
+                <li>Nếu dữ liệu chưa được cập nhật hoặc làm mới, bot có thể không trả lời đúng hoặc đầy đủ.</li>
+                <li>Chức năng chat luôn sẵn sàng cho mọi tài khoản đăng nhập.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="guide-section">
+        <h2>2. Cập nhật dữ liệu mới</h2>
+        <button onclick="toggleEdit(this)" class="edit-button">Chỉnh sửa</button>
+        <div class="content" contenteditable="false">
+            <b>Cách cập nhật dữ liệu cho hệ thống:</b>
+            <ul>
+                <li>Chọn mục "Cập nhật dữ liệu mới" trên thanh menu.</li>
+                <li>Có thể nhập trực tiếp văn bản hoặc tải lên file PDF.</li>
+                <li>Sau khi xử lý, dữ liệu sẽ được thêm vào hệ thống và dùng cho việc trả lời câu hỏi.</li>
+                <li>Mỗi lần cập nhật dữ liệu, hệ thống sẽ tự động làm mới để botchat sử dụng dữ liệu mới nhất.</li>
+            </ul>
+            <b>Lưu ý:</b>
+            <ul>
+                <li>Kiểm tra lại dữ liệu sau khi cập nhật để đảm bảo botchat trả lời đúng.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="guide-section">
+        <h2>3. Xóa bỏ dữ liệu</h2>
+        <button onclick="toggleEdit(this)" class="edit-button">Chỉnh sửa</button>
+        <div class="content" contenteditable="false">
+            <b>Cách xóa dữ liệu khỏi hệ thống:</b>
+            <ul>
+                <li>Chọn mục "Xoá bỏ dữ liệu" trên thanh menu.</li>
+                <li>Tìm kiếm đoạn tài liệu cần xoá và coppy ID tài liệu nó</li>
+                <li>Nhập ID của tài liệu cần xóa</li>
+                <li>Sau khi xóa, dữ liệu sẽ bị loại khỏi hệ thống và botchat sẽ không sử dụng dữ liệu đó nữa.</li>
+                <li>Mỗi thao tác xóa đều được ghi lại trong lịch sử hoạt động để truy vết.</li>
+                <li>Sử dụng chức năng làm sạch toàn bộ database sẽ làm mới hoàn toàn dữ liệu.</li>
+            </ul>
+            <b>Lưu ý:</b>
+            <ul>
+                <li>Hãy cẩn trọng khi sử dụng chức năng làm sạch database vì thao tác này không thể hoàn tác.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="guide-section">
+        <h2>4. Quản lý tài khoản -Chỉ tài khoản Admin</h2>
+        <button onclick="toggleEdit(this)" class="edit-button">Chỉnh sửa</button>
+        <div class="content" contenteditable="false">
+            <b>Cung cấp các chức năng liên quan đến tài khoản:</b>
+            <ul>
+                <li>Tạo mới tài khoản.</li>
+                <li>Phân quyền tài khoản</li>
+                <li>Xem/thay đổi mật khẩu các tài khoản</li>
+                <li>Xoá tài khoản.</li>
+            </ul>
+            <b>Lưu ý:</b>
+            <ul>
+                <li>Admin không thể tự xoá tài khoản chính mình</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="guide-section">
+        <h2>5. Lịch sử hoạt động</h2>
+        <button onclick="toggleEdit(this)" class="edit-button">Chỉnh sửa</button>
+        <div class="content" contenteditable="false">
+            <b>Xem các hoạt động của tài khoản tương tác tại trang quản trị:</b>
+            <ul>
+                <li>Tài khoản Admin xem được tất cả lịch sử hoạt động.</li>
+                <li>Tài khoản Normal xem được lịch sử hoạt động bản thân.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="guide-section">
+        <h2>6. Lịch sử trò chuyện</h2>
+        <button onclick="toggleEdit(this)" class="edit-button">Chỉnh sửa</button>
+        <div class="content" contenteditable="false">
+            <b>Xem các câu hỏi của người dùng và phản hồi của bot chat:</b>
+            <ul>
+                <li>Các bộ lọc hỗ trợ.</li>
+                <li>Chọn Ẩn/Hiện nguồn để xem nguồn dữ liệu chatbot sử dụng cho câu trả lời.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="guide-section">
+        <h2>7. Cài đặt - Chỉ Admin</h2>
+        <button onclick="toggleEdit(this)" class="edit-button">Chỉnh sửa</button>
+        <div class="content" contenteditable="false">
+            <b>Xem và thay đổi các cấu hình chatbot:</b>
+            <ul>
+                <li>Đổi Key API.</li>
+                <li>Đổi Model LLM - Google.</li>
+                <li>Các cài đặt liên quan đến độ nhạy và chính xác chatbot.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleEdit(button) {
+            const content = button.nextElementSibling;
+            const isEditing = content.contentEditable === 'true';
+            content.contentEditable = !isEditing;
+            button.textContent = isEditing ? 'Chỉnh sửa' : 'Lưu';
+            button.style.background = isEditing ? '#1a73e8' : '#28a745';
+            
+            if (isEditing) {
+                // Add save functionality here if needed
+                console.log('Saved content:', content.innerHTML);
+            }
+        }
+    </script>
+</body>
+</html>
